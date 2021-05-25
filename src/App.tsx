@@ -2,7 +2,21 @@ import React, {useState} from 'react'
 import './App.css'
 import {Todo} from './Todo'
 import {v1} from 'uuid'
-import AddItemForm from './components/AddItemForm/AddItemForm'
+import {AddItemForm} from './components/AddItemForm/AddItemForm'
+import {
+  AppBar,
+  Button,
+  Container,
+  createStyles,
+  Grid,
+  IconButton,
+  makeStyles,
+  Paper,
+  Theme,
+  Toolbar,
+  Typography
+} from '@material-ui/core'
+import {Menu} from '@material-ui/icons'
 
 type TodoType = {
   id: string
@@ -22,7 +36,24 @@ type TasksType = {
 
 export type FilterValueType = 'all' | 'active' | 'completed'
 
+
+const useStyles = makeStyles((theme: Theme) =>
+  createStyles({
+    root: {
+      flexGrow: 1,
+    },
+    menuButton: {
+      marginRight: theme.spacing(2),
+    },
+    title: {
+      flexGrow: 1,
+    },
+  }),
+)
+
+
 const App = () => {
+  const classes = useStyles()
 
   const todoId1 = v1()
   const todoId2 = v1()
@@ -108,37 +139,59 @@ const App = () => {
   }
 
   return (
-    <div className="App">
-      <AddItemForm addItem={addTodo} />
-      {
-        todos.map(todo => {
+    <div>
+      <AppBar position="static" color="secondary">
+        <Toolbar>
+          <IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="menu">
+            <Menu />
+          </IconButton>
+          <Typography variant="h6" className={classes.title}>
+            Todo
+          </Typography>
+          <Button color="inherit">Login</Button>
+        </Toolbar>
+      </AppBar>
+      <Container fixed>
+        <Grid container style={{padding: '20px'}}>
+          <AddItemForm addItem={addTodo} />
+        </Grid>
+        <Grid container spacing={3}>
+          {
+            todos.map(todo => {
+              let tasksForTodolist = tasks[todo.id];
 
-          if (todo.filter === 'active') {
-            tasks[todo.id] = tasks[todo.id].filter(task => !task.isDone)
+              if (todo.filter === 'active') {
+                tasksForTodolist = tasks[todo.id].filter(task => !task.isDone)
+              }
+
+              if (todo.filter === 'completed') {
+                tasksForTodolist = tasks[todo.id].filter(task => task.isDone)
+              }
+
+              return (
+                <Grid item>
+                  <Paper style={{padding: '10px'}} elevation={5}>
+                    <Todo
+                      key={todo.id}
+                      todoId={todo.id}
+                      todoTitle={todo.title}
+                      changeTodoFilter={changeTodoFilter}
+                      todoFilter={todo.filter}
+                      removeTodo={removeTodo}
+                      changeTodoTitle={changeTodoTitle}
+                      tasks={tasksForTodolist}
+                      removeTask={removeTask}
+                      addTask={addTask}
+                      changeTaskStatus={changeTaskStatus}
+                      changeTaskTitle={changeTaskTitle}
+                    />
+                  </Paper>
+                </Grid>
+              )
+            })
           }
-
-          if (todo.filter === 'completed') {
-            tasks[todo.id] = tasks[todo.id].filter(task => task.isDone)
-          }
-
-          return (
-            <Todo
-              key={todo.id}
-              todoId={todo.id}
-              todoTitle={todo.title}
-              tasks={tasks[todo.id]}
-              removeTask={removeTask}
-              addTask={addTask}
-              changeTodoFilter={changeTodoFilter}
-              changeTaskStatus={changeTaskStatus}
-              changeTaskTitle={changeTaskTitle}
-              todoFilter={todo.filter}
-              removeTodo={removeTodo}
-              changeTodoTitle={changeTodoTitle}
-            />
-          )
-        })
-      }
+        </Grid>
+      </Container>
     </div>
   )
 }
