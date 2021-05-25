@@ -1,4 +1,4 @@
-import {TasksType} from '../App'
+import {TasksType, TaskType} from '../App'
 import {v1} from 'uuid'
 import {AddTodoActionType, RemoveTodoActionType} from './todos-reducer'
 
@@ -36,18 +36,23 @@ type ActionType =
   | AddTodoActionType
   | RemoveTodoActionType
 
-export const tasksReducer = (state: TasksType, action: ActionType) => {
+const initialState: TasksType = {}
+
+export const tasksReducer = (state: TasksType = initialState, action: ActionType) => {
   switch (action.type) {
     case 'REMOVE-TASK': {
-      // state[action.todoId] = state[action.todoId].filter(task => task.id !== action.taskId)
-      // return state
       return {
         ...state,
         [action.todoId]: [...state[action.todoId].filter(task => task.id !== action.taskId)]
       }
     }
     case 'ADD-TASK': {
-      const newTask = {id: v1(), title: action.title, isDone: false}
+      const newTask: TaskType = {
+        id: v1(),
+        title: action.title,
+        status: false
+      }
+      debugger
       return {
         ...state,
         [action.todoId]: [newTask, ...state[action.todoId]]
@@ -58,7 +63,7 @@ export const tasksReducer = (state: TasksType, action: ActionType) => {
         ...state,
         [action.todoId]: [...state[action.todoId].map(task => {
           if (task.id === action.taskId) {
-            return {...task, isDone: action.status}
+            return {...task, status: action.status}
           } else {
             return task
           }

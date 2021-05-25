@@ -1,18 +1,18 @@
-import {addTaskAC, changeTaskStatusAC, changeTaskTitleAC, removeTaskAC, tasksReducer} from './tasks-reducer'
-import {TasksType} from '../App'
-import {addTodoAC, removeTodoAC} from './todos-reducer'
+import {addTaskAC, changeTaskStatusAC, changeTaskTitleAC, removeTaskAC, tasksReducer} from '../tasks-reducer'
+import {TasksType} from '../../App'
+import {addTodoAC, removeTodoAC} from '../todos-reducer'
 
 test('correct task should be deleted from correct array', () => {
   const startState: TasksType = {
     'todoId1': [
-      {id: '1', title: 'CSS', isDone: false},
-      {id: '2', title: 'JS', isDone: true},
-      {id: '3', title: 'React', isDone: false}
+      {id: '1', title: 'CSS', status: false},
+      {id: '2', title: 'JS', status: true},
+      {id: '3', title: 'React', status: false}
     ],
     'todoId2': [
-      {id: '1', title: 'bread', isDone: false},
-      {id: '2', title: 'milk', isDone: true},
-      {id: '3', title: 'tea', isDone: false}
+      {id: '1', title: 'bread', status: false},
+      {id: '2', title: 'milk', status: true},
+      {id: '3', title: 'tea', status: false}
     ]
   }
 
@@ -22,13 +22,13 @@ test('correct task should be deleted from correct array', () => {
 
   expect(endState).toEqual({
     'todoId1': [
-      {id: '1', title: 'CSS', isDone: false},
-      {id: '2', title: 'JS', isDone: true},
-      {id: '3', title: 'React', isDone: false}
+      {id: '1', title: 'CSS', status: false},
+      {id: '2', title: 'JS', status: true},
+      {id: '3', title: 'React', status: false}
     ],
     'todoId2': [
-      {id: '1', title: 'bread', isDone: false},
-      {id: '3', title: 'tea', isDone: false}
+      {id: '1', title: 'bread', status: false},
+      {id: '3', title: 'tea', status: false}
     ]
   })
 
@@ -37,14 +37,14 @@ test('correct task should be deleted from correct array', () => {
 test('correct task should be added to correct array', () => {
   const startState: TasksType = {
     'todoId1': [
-      {id: '1', title: 'CSS', isDone: false},
-      {id: '2', title: 'JS', isDone: true},
-      {id: '3', title: 'React', isDone: false}
+      {id: '1', title: 'CSS', status: false},
+      {id: '2', title: 'JS', status: true},
+      {id: '3', title: 'React', status: false}
     ],
     'todoId2': [
-      {id: '1', title: 'bread', isDone: false},
-      {id: '2', title: 'milk', isDone: true},
-      {id: '3', title: 'tea', isDone: false}
+      {id: '1', title: 'bread', status: false},
+      {id: '2', title: 'milk', status: true},
+      {id: '3', title: 'tea', status: false}
     ]
   }
 
@@ -56,20 +56,20 @@ test('correct task should be added to correct array', () => {
   expect(endState['todoId2'].length).toBe(4)
   expect(endState['todoId2'][0].id).toBeDefined()
   expect(endState['todoId2'][0].title).toBe('strawberry')
-  expect(endState['todoId2'][0].isDone).toBe(false)
+  expect(endState['todoId2'][0].status).toBe(false)
 })
 
 test('status of specified task should be changed', () => {
   const startState: TasksType = {
     'todoId1': [
-      {id: '1', title: 'CSS', isDone: false},
-      {id: '2', title: 'JS', isDone: true},
-      {id: '3', title: 'React', isDone: false}
+      {id: '1', title: 'CSS', status: false},
+      {id: '2', title: 'JS', status: true},
+      {id: '3', title: 'React', status: false}
     ],
     'todoId2': [
-      {id: '1', title: 'bread', isDone: false},
-      {id: '2', title: 'milk', isDone: true},
-      {id: '3', title: 'tea', isDone: false}
+      {id: '1', title: 'bread', status: false},
+      {id: '2', title: 'milk', status: true},
+      {id: '3', title: 'tea', status: false}
     ]
   }
 
@@ -77,21 +77,21 @@ test('status of specified task should be changed', () => {
 
   const endState = tasksReducer(startState, action)
 
-  expect(endState['todoId2'][1].isDone).toBeFalsy()
-  expect(endState['todoId1'][1].isDone).toBeTruthy()
+  expect(endState['todoId2'][1].status).toBeFalsy()
+  expect(endState['todoId1'][1].status).toBeTruthy()
 })
 
 test('title of specified task should be changed', () => {
   const startState: TasksType = {
     'todoId1': [
-      {id: '1', title: 'CSS', isDone: false},
-      {id: '2', title: 'JS', isDone: true},
-      {id: '3', title: 'React', isDone: false}
+      {id: '1', title: 'CSS', status: false},
+      {id: '2', title: 'JS', status: true},
+      {id: '3', title: 'React', status: false}
     ],
     'todoId2': [
-      {id: '1', title: 'bread', isDone: false},
-      {id: '2', title: 'milk', isDone: true},
-      {id: '3', title: 'tea', isDone: false}
+      {id: '1', title: 'bread', status: false},
+      {id: '2', title: 'milk', status: true},
+      {id: '3', title: 'tea', status: false}
     ]
   }
 
@@ -105,14 +105,14 @@ test('title of specified task should be changed', () => {
 test('new array should be added when new todolist is added', () => {
   const startState: TasksType = {
     'todoId1': [
-      {id: '1', title: 'CSS', isDone: false},
-      {id: '2', title: 'JS', isDone: true},
-      {id: '3', title: 'React', isDone: false}
+      {id: '1', title: 'CSS', status: false},
+      {id: '2', title: 'JS', status: true},
+      {id: '3', title: 'React', status: false}
     ],
     'todoId2': [
-      {id: '1', title: 'bread', isDone: false},
-      {id: '2', title: 'milk', isDone: true},
-      {id: '3', title: 'tea', isDone: false}
+      {id: '1', title: 'bread', status: false},
+      {id: '2', title: 'milk', status: true},
+      {id: '3', title: 'tea', status: false}
     ]
   }
 
@@ -133,14 +133,14 @@ test('new array should be added when new todolist is added', () => {
 test('property with todolistId should be deleted', () => {
   const startState: TasksType = {
     'todoId1': [
-      {id: '1', title: 'CSS', isDone: false},
-      {id: '2', title: 'JS', isDone: true},
-      {id: '3', title: 'React', isDone: false}
+      {id: '1', title: 'CSS', status: false},
+      {id: '2', title: 'JS', status: true},
+      {id: '3', title: 'React', status: false}
     ],
     'todoId2': [
-      {id: '1', title: 'bread', isDone: false},
-      {id: '2', title: 'milk', isDone: true},
-      {id: '3', title: 'tea', isDone: false}
+      {id: '1', title: 'bread', status: false},
+      {id: '2', title: 'milk', status: true},
+      {id: '3', title: 'tea', status: false}
     ]
   }
 

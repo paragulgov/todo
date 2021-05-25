@@ -26,7 +26,9 @@ export type ChangeTodoFilterActionType = {
 
 type ActionType = RemoveTodoActionType | AddTodoActionType | ChangeTodoTitleActionType | ChangeTodoFilterActionType
 
-export const todosReducer = (state: Array<TodoType>, action: ActionType): Array<TodoType> => {
+const initialState: Array<TodoType> = []
+
+export const todosReducer = (state: Array<TodoType> = initialState, action: ActionType): Array<TodoType> => {
   switch (action.type) {
     case 'REMOVE-TODO': {
       return state.filter(todo => todo.id !== action.todoId)

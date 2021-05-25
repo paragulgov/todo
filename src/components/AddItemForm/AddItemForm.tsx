@@ -14,19 +14,19 @@ export const AddItemForm = (props: AddItemFormPropsType) => {
     setTitle(e.currentTarget.value)
   }
 
-  const onKeyPressHandler = (e: KeyboardEvent<HTMLInputElement>) => {
-    setError(null)
-    if (e.charCode === 13) {
-      addItem()
-    }
-  }
-
   const addItem = () => {
     if (title.trim() !== '') {
       props.addItem(title)
       setTitle('')
     } else {
       setError('Title is required')
+    }
+  }
+
+  const onKeyPressHandler = (e: KeyboardEvent<HTMLInputElement>) => {
+    setError(null)
+    if (e.charCode === 13) {
+      addItem()
     }
   }
 

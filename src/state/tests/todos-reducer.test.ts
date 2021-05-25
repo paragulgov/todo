@@ -1,6 +1,6 @@
 import {v1} from 'uuid'
-import {FilterValueType, TodoType} from '../App'
-import {addTodoAC, changeTodoFilterAC, changeTodoTitleAC, removeTodoAC, todosReducer} from './todos-reducer'
+import {FilterValueType, TodoType} from '../../App'
+import {addTodoAC, changeTodoFilterAC, changeTodoTitleAC, removeTodoAC, todosReducer} from '../todos-reducer'
 
 
 test('correct todo should be removed', () => {
