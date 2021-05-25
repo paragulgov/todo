@@ -18,7 +18,7 @@ import {
 } from '@material-ui/core'
 import {Menu} from '@material-ui/icons'
 
-type TodoType = {
+export type TodoType = {
   id: string
   title: string
   filter: FilterValueType
@@ -30,7 +30,7 @@ export type TaskType = {
   isDone: boolean
 }
 
-type TasksType = {
+export type TasksType = {
   [key: string]: Array<TaskType>
 }
 
@@ -158,14 +158,14 @@ const App = () => {
         <Grid container spacing={3}>
           {
             todos.map(todo => {
-              let tasksForTodolist = tasks[todo.id];
+              let tasksForTodo = tasks[todo.id];
 
               if (todo.filter === 'active') {
-                tasksForTodolist = tasks[todo.id].filter(task => !task.isDone)
+                tasksForTodo = tasks[todo.id].filter(task => !task.isDone)
               }
 
               if (todo.filter === 'completed') {
-                tasksForTodolist = tasks[todo.id].filter(task => task.isDone)
+                tasksForTodo = tasks[todo.id].filter(task => task.isDone)
               }
 
               return (
@@ -179,7 +179,7 @@ const App = () => {
                       todoFilter={todo.filter}
                       removeTodo={removeTodo}
                       changeTodoTitle={changeTodoTitle}
-                      tasks={tasksForTodolist}
+                      tasks={tasksForTodo}
                       removeTask={removeTask}
                       addTask={addTask}
                       changeTaskStatus={changeTaskStatus}
