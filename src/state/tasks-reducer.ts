@@ -43,16 +43,11 @@ export const tasksReducer = (state: TasksType = initialState, action: ActionType
     case 'REMOVE-TASK': {
       return {
         ...state,
-        [action.todoId]: [...state[action.todoId].filter(task => task.id !== action.taskId)]
+        [action.todoId]: state[action.todoId].filter(task => task.id !== action.taskId)
       }
     }
     case 'ADD-TASK': {
-      const newTask: TaskType = {
-        id: v1(),
-        title: action.title,
-        status: false
-      }
-      debugger
+      const newTask: TaskType = {id: v1(), title: action.title, status: false}
       return {
         ...state,
         [action.todoId]: [newTask, ...state[action.todoId]]
@@ -61,25 +56,25 @@ export const tasksReducer = (state: TasksType = initialState, action: ActionType
     case 'CHANGE-TASK-STATUS': {
       return {
         ...state,
-        [action.todoId]: [...state[action.todoId].map(task => {
+        [action.todoId]: state[action.todoId].map(task => {
           if (task.id === action.taskId) {
             return {...task, status: action.status}
           } else {
             return task
           }
-        })]
+        })
       }
     }
     case 'CHANGE-TASK-TITLE': {
       return {
         ...state,
-        [action.todoId]: [...state[action.todoId].map(task => {
+        [action.todoId]: state[action.todoId].map(task => {
           if (task.id === action.taskId) {
             return {...task, title: action.title}
           } else {
             return task
           }
-        })]
+        })
       }
     }
     case 'ADD-TODO': {

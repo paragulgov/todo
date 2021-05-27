@@ -42,18 +42,22 @@ export const todosReducer = (state: Array<TodoType> = initialState, action: Acti
       return [newTodo, ...state]
     }
     case 'CHANGE-TODO-TITLE': {
-      let todo = state.find(todo => todo.id === action.todoId)
-      if (todo) {
-        todo.title = action.title
-      }
-      return [...state]
+      return state.map(todo => {
+        if (todo.id === action.todoId) {
+          return {...todo, title: action.title}
+        } else {
+          return todo
+        }
+      })
     }
     case 'CHANGE-TODO-FILTER': {
-      let todo = state.find(todo => todo.id === action.todoId)
-      if (todo) {
-        todo.filter = action.filter
-      }
-      return [...state]
+      return state.map(todo => {
+        if (todo.id === action.todoId) {
+          return {...todo, filter: action.filter}
+        } else {
+          return todo
+        }
+      })
     }
     default:
       return state

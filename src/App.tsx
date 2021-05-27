@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useCallback} from 'react'
 import './App.css'
 import {Todo} from './Todo'
 import {AddItemForm} from './components/AddItemForm/AddItemForm'
@@ -62,37 +62,37 @@ const App = () => {
   const tasks = useSelector<AppRootStateType, TasksType>(state => state.tasks)
   const dispatch = useDispatch()
 
-  const addTodo = (title: string) => {
+  const addTodo = useCallback((title: string) => {
     dispatch(addTodoAC(title))
-  }
+  }, [dispatch])
 
-  const changeTodoFilter = (value: FilterValueType, todoId: string) => {
+  const changeTodoFilter = useCallback((value: FilterValueType, todoId: string) => {
     dispatch(changeTodoFilterAC(todoId, value))
-  }
+  }, [dispatch])
 
-  const changeTodoTitle = (title: string, todoId: string) => {
+  const changeTodoTitle = useCallback((title: string, todoId: string) => {
     dispatch(changeTodoTitleAC(todoId, title))
-  }
+  }, [dispatch])
 
-  const removeTodo = (todoId: string) => {
+  const removeTodo = useCallback((todoId: string) => {
     dispatch(removeTodoAC(todoId))
-  }
+  }, [dispatch])
 
-  const changeTaskStatus = (taskId: string, todoId: string, status: boolean) => {
+  const changeTaskStatus = useCallback((taskId: string, todoId: string, status: boolean) => {
     dispatch(changeTaskStatusAC(taskId, todoId, status))
-  }
+  }, [dispatch])
 
-  const addTask = (title: string, todoId: string) => {
+  const addTask = useCallback((title: string, todoId: string) => {
     dispatch(addTaskAC(todoId, title))
-  }
+  }, [dispatch])
 
-  const removeTask = (taskId: string, todoId: string) => {
+  const removeTask = useCallback((taskId: string, todoId: string) => {
     dispatch(removeTaskAC(taskId, todoId))
-  }
+  }, [dispatch])
 
-  const changeTaskTitle = (taskId: string, todoId: string, title: string) => {
+  const changeTaskTitle = useCallback((taskId: string, todoId: string, title: string) => {
     dispatch(changeTaskTitleAC(taskId, todoId, title))
-  }
+  }, [dispatch])
 
   return (
     <div>
@@ -114,28 +114,17 @@ const App = () => {
         <Grid container spacing={3}>
           {
             todos.map(todo => {
-              let tasksForTodo = tasks[todo.id]
-
-              if (todo.filter === 'active') {
-                tasksForTodo = tasks[todo.id].filter(task => !task.status)
-              }
-
-              if (todo.filter === 'completed') {
-                tasksForTodo = tasks[todo.id].filter(task => task.status)
-              }
-
               return (
-                <Grid item>
+                <Grid item key={todo.id}>
                   <Paper style={{padding: '10px'}} elevation={5}>
                     <Todo
-                      key={todo.id}
                       todoId={todo.id}
                       todoTitle={todo.title}
                       changeTodoFilter={changeTodoFilter}
                       todoFilter={todo.filter}
                       removeTodo={removeTodo}
                       changeTodoTitle={changeTodoTitle}
-                      tasks={tasksForTodo}
+                      tasks={tasks[todo.id]}
                       removeTask={removeTask}
                       addTask={addTask}
                       changeTaskStatus={changeTaskStatus}
