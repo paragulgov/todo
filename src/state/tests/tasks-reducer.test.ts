@@ -1,5 +1,13 @@
-import {addTaskAC, changeTaskStatusAC, changeTaskTitleAC, removeTaskAC, tasksReducer, TasksType} from '../tasks-reducer'
-import {addTodoAC, removeTodoAC} from '../todos-reducer'
+import {
+  addTaskAC,
+  changeTaskStatusAC,
+  changeTaskTitleAC,
+  removeTaskAC,
+  setTasksAC,
+  tasksReducer,
+  TasksType
+} from '../tasks-reducer'
+import {addTodoAC, removeTodoAC, setTodosAC} from '../todos-reducer'
 import {TaskPriority, TaskStatus} from '../../api/todo-api'
 
 test('correct task should be deleted from correct array', () => {
@@ -598,4 +606,112 @@ test('property with todolistId should be deleted', () => {
 
   expect(keys.length).toBe(1)
   expect(endState['todolistId2']).not.toBeDefined()
+})
+
+test('empty arrays should be added when we set todos', () => {
+
+  const action = setTodosAC([
+    {id: 'todoId1', title: 'What to learn', order: 0, addedDate: ''},
+    {id: 'todoId2', title: 'What to buy', order: 0, addedDate: ''}
+  ])
+
+  const endState = tasksReducer({}, action)
+
+  const keys = Object.keys(endState)
+
+  expect(keys.length).toBe(2)
+  expect(endState['todoId1']).toStrictEqual([])
+  expect(endState['todoId2']).toStrictEqual([])
+})
+
+test('tasks should be added for todo', () => {
+  const startState: TasksType = {
+    'todoId1': [
+      {
+        id: '1',
+        title: 'CSS',
+        status: TaskStatus.New,
+        priority: TaskPriority.Low,
+        order: 0,
+        addedDate: '',
+        deadline: '',
+        description: '',
+        startDate: '',
+        todoId: 'todoId1'
+      },
+      {
+        id: '2',
+        title: 'JS',
+        status: TaskStatus.Completed,
+        priority: TaskPriority.Low,
+        order: 0,
+        addedDate: '',
+        deadline: '',
+        description: '',
+        startDate: '',
+        todoId: 'todoId1'
+      },
+      {
+        id: '3',
+        title: 'React',
+        status: TaskStatus.New,
+        priority: TaskPriority.Low,
+        order: 0,
+        addedDate: '',
+        deadline: '',
+        description: '',
+        startDate: '',
+        todoId: 'todoId1'
+      }
+    ],
+    'todoId2': [
+      {
+        id: '1',
+        title: 'bread',
+        status: TaskStatus.New,
+        priority: TaskPriority.Low,
+        order: 0,
+        addedDate: '',
+        deadline: '',
+        description: '',
+        startDate: '',
+        todoId: 'todoId2'
+      },
+      {
+        id: '2',
+        title: 'milk',
+        status: TaskStatus.Completed,
+        priority: TaskPriority.Low,
+        order: 0,
+        addedDate: '',
+        deadline: '',
+        description: '',
+        startDate: '',
+        todoId: 'todoId2'
+      },
+      {
+        id: '3',
+        title: 'tea',
+        status: TaskStatus.New,
+        priority: TaskPriority.Low,
+        order: 0,
+        addedDate: '',
+        deadline: '',
+        description: '',
+        startDate: '',
+        todoId: 'todoId2'
+      }
+    ]
+  }
+
+  const action = setTasksAC(startState['todoId2'], 'todoId1')
+
+  const endState = tasksReducer({
+    'todoId2': [],
+    'todoId1': []
+  }, action)
+
+
+  expect(endState['todoId1'].length).toBe(3)
+  expect(endState['todoId2'].length).toBe(0)
 })

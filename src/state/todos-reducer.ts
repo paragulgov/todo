@@ -1,5 +1,6 @@
+import {Dispatch} from 'redux'
 import {v1} from 'uuid'
-import {TodoType} from '../api/todo-api'
+import {todoAPI, TodoType} from '../api/todo-api'
 
 export type RemoveTodoActionType = {
   type: 'REMOVE-TODO'
@@ -21,16 +22,26 @@ export type ChangeTodoTitleActionType = {
 export type ChangeTodoFilterActionType = {
   type: 'CHANGE-TODO-FILTER'
   todoId: string
-  filter: FilterValueType
+  filter: TodoFilterValueType
 }
 
-type ActionType = RemoveTodoActionType | AddTodoActionType | ChangeTodoTitleActionType | ChangeTodoFilterActionType
+export type SetTodosActionType = {
+  type: 'SET-TODOS'
+  todos: Array<TodoType>
+}
+
+type ActionType =
+  RemoveTodoActionType
+  | AddTodoActionType
+  | ChangeTodoTitleActionType
+  | ChangeTodoFilterActionType
+  | SetTodosActionType
 
 const initialState: Array<TodoDomainType> = []
 
-export type FilterValueType = 'all' | 'active' | 'completed'
+export type TodoFilterValueType = 'all' | 'active' | 'completed'
 export type TodoDomainType = TodoType & {
-  filter: FilterValueType
+  filter: TodoFilterValueType
 }
 
 export const todosReducer = (state: Array<TodoDomainType> = initialState, action: ActionType): Array<TodoDomainType> => {
@@ -66,6 +77,14 @@ export const todosReducer = (state: Array<TodoDomainType> = initialState, action
         }
       })
     }
+    case 'SET-TODOS': {
+      return action.todos.map(todo => {
+        return {
+          ...todo,
+          filter: 'all'
+        }
+      })
+    }
     default:
       return state
   }
@@ -83,7 +102,17 @@ export const changeTodoTitleAC = (todoId: string, title: string): ChangeTodoTitl
   return {type: 'CHANGE-TODO-TITLE', todoId, title}
 }
 
-export const changeTodoFilterAC = (todoId: string, filter: FilterValueType): ChangeTodoFilterActionType => {
+export const changeTodoFilterAC = (todoId: string, filter: TodoFilterValueType): ChangeTodoFilterActionType => {
   return {type: 'CHANGE-TODO-FILTER', todoId, filter}
 }
 
+export const setTodosAC = (todos: Array<TodoType>): SetTodosActionType => {
+  return {type: 'SET-TODOS', todos}
+}
+
+export const fetchTodosTC = () => (dispatch: Dispatch) => {
+  todoAPI.getTodos()
+    .then((res) => {
+      dispatch(setTodosAC(res.data))
+    })
+}

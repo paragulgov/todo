@@ -2,10 +2,10 @@ import {v1} from 'uuid'
 import {
   addTodoAC,
   changeTodoFilterAC,
-  changeTodoTitleAC, FilterValueType,
+  changeTodoTitleAC, TodoFilterValueType,
   removeTodoAC,
   TodoDomainType,
-  todosReducer
+  todosReducer, setTodosAC
 } from '../todos-reducer'
 
 
@@ -68,7 +68,7 @@ test('correct filter of todo should be changed', () => {
   const todoId1 = v1()
   const todoId2 = v1()
 
-  let newFilter: FilterValueType = 'completed'
+  let newFilter: TodoFilterValueType = 'completed'
 
   const startState: Array<TodoDomainType> = [
     {id: todoId1, title: 'What to learn', filter: 'all', order: 0, addedDate: ''},
@@ -82,3 +82,17 @@ test('correct filter of todo should be changed', () => {
   expect(endState[0].filter).toBe('all')
   expect(endState[1].filter).toBe(newFilter)
 })
+
+test('todos should be set to state', () => {
+  const startState: Array<TodoDomainType> = [
+    {id: 'todoId1', title: 'What to learn', filter: 'all', order: 0, addedDate: ''},
+    {id: 'todoId2', title: 'What to buy', filter: 'all', order: 0, addedDate: ''}
+  ]
+
+  const action = setTodosAC(startState)
+
+  const endState = todosReducer([], action)
+
+  expect(endState.length).toBe(2)
+})
+

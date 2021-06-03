@@ -80,7 +80,7 @@ export const todoAPI = {
   },
 
   getTasks(todoId: string) {
-    return instance.post<GetTasksResponse>(`todo-lists/${todoId}/tasks`)
+    return instance.get<GetTasksResponse>(`todo-lists/${todoId}/tasks`)
   },
   createTask(todoId: string, title: string) {
     return instance.post<ResponseType<TaskType>>(`todo-lists/${todoId}/tasks`, {title})

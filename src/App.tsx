@@ -1,4 +1,4 @@
-import React, {useCallback} from 'react'
+import React, {useCallback, useEffect} from 'react'
 import './App.css'
 import {Todo} from './Todo'
 import {AddItemForm} from './components/AddItemForm/AddItemForm'
@@ -22,9 +22,10 @@ import {
   addTodoAC,
   changeTodoFilterAC,
   changeTodoTitleAC,
-  FilterValueType,
+  fetchTodosTC,
   removeTodoAC,
-  TodoDomainType
+  TodoDomainType,
+  TodoFilterValueType
 } from './state/todos-reducer'
 import {addTaskAC, changeTaskStatusAC, changeTaskTitleAC, removeTaskAC, TasksType} from './state/tasks-reducer'
 import {TaskStatus} from './api/todo-api'
@@ -51,11 +52,15 @@ const App = () => {
   const tasks = useSelector<AppRootStateType, TasksType>(state => state.tasks)
   const dispatch = useDispatch()
 
+  useEffect(() => {
+    dispatch(fetchTodosTC())
+  }, [dispatch])
+
   const addTodo = useCallback((title: string) => {
     dispatch(addTodoAC(title))
   }, [dispatch])
 
-  const changeTodoFilter = useCallback((value: FilterValueType, todoId: string) => {
+  const changeTodoFilter = useCallback((value: TodoFilterValueType, todoId: string) => {
     dispatch(changeTodoFilterAC(todoId, value))
   }, [dispatch])
 
