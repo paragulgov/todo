@@ -1,15 +1,21 @@
 import {v1} from 'uuid'
-import {FilterValueType, TodoType} from '../../App'
-import {addTodoAC, changeTodoFilterAC, changeTodoTitleAC, removeTodoAC, todosReducer} from '../todos-reducer'
+import {
+  addTodoAC,
+  changeTodoFilterAC,
+  changeTodoTitleAC, FilterValueType,
+  removeTodoAC,
+  TodoDomainType,
+  todosReducer
+} from '../todos-reducer'
 
 
 test('correct todo should be removed', () => {
   const todoId1 = v1()
   const todoId2 = v1()
 
-  const startState: Array<TodoType> = [
-    {id: todoId1, title: 'What to learn', filter: 'all'},
-    {id: todoId2, title: 'What to buy', filter: 'all'}
+  const startState: Array<TodoDomainType> = [
+    {id: todoId1, title: 'What to learn', filter: 'all', order: 0, addedDate: ''},
+    {id: todoId2, title: 'What to buy', filter: 'all', order: 0, addedDate: ''}
   ]
 
   const action = removeTodoAC(todoId1)
@@ -26,9 +32,9 @@ test('correct todo should be added', () => {
 
   const newTodoTitle = 'New Todo'
 
-  const startState: Array<TodoType> = [
-    {id: todoId1, title: 'What to learn', filter: 'all'},
-    {id: todoId2, title: 'What to buy', filter: 'all'}
+  const startState: Array<TodoDomainType> = [
+    {id: todoId1, title: 'What to learn', filter: 'all', order: 0, addedDate: ''},
+    {id: todoId2, title: 'What to buy', filter: 'all', order: 0, addedDate: ''}
   ]
 
   const action = addTodoAC(newTodoTitle)
@@ -45,9 +51,9 @@ test('correct todo should change its title', () => {
 
   const newTodoTitle = 'New Todolist'
 
-  const startState: Array<TodoType> = [
-    {id: todoId1, title: 'What to learn', filter: 'all'},
-    {id: todoId2, title: 'What to buy', filter: 'all'}
+  const startState: Array<TodoDomainType> = [
+    {id: todoId1, title: 'What to learn', filter: 'all', order: 0, addedDate: ''},
+    {id: todoId2, title: 'What to buy', filter: 'all', order: 0, addedDate: ''}
   ]
 
   const action = changeTodoTitleAC(todoId2, newTodoTitle)
@@ -64,9 +70,9 @@ test('correct filter of todo should be changed', () => {
 
   let newFilter: FilterValueType = 'completed'
 
-  const startState: Array<TodoType> = [
-    {id: todoId1, title: 'What to learn', filter: 'all'},
-    {id: todoId2, title: 'What to buy', filter: 'all'}
+  const startState: Array<TodoDomainType> = [
+    {id: todoId1, title: 'What to learn', filter: 'all', order: 0, addedDate: ''},
+    {id: todoId2, title: 'What to buy', filter: 'all', order: 0, addedDate: ''}
   ]
 
   const action = changeTodoFilterAC(todoId2, newFilter)

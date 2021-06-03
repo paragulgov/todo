@@ -18,27 +18,16 @@ import {
 import {Menu} from '@material-ui/icons'
 import {useDispatch, useSelector} from 'react-redux'
 import {AppRootStateType} from './state/store'
-import {addTodoAC, changeTodoFilterAC, changeTodoTitleAC, removeTodoAC} from './state/todos-reducer'
-import {addTaskAC, changeTaskStatusAC, changeTaskTitleAC, removeTaskAC} from './state/tasks-reducer'
-
-export type TodoType = {
-  id: string
-  title: string
-  filter: FilterValueType
-}
-
-export type TaskType = {
-  id: string
-  title: string
-  status: boolean
-}
-
-export type TasksType = {
-  [key: string]: Array<TaskType>
-}
-
-export type FilterValueType = 'all' | 'active' | 'completed'
-
+import {
+  addTodoAC,
+  changeTodoFilterAC,
+  changeTodoTitleAC,
+  FilterValueType,
+  removeTodoAC,
+  TodoDomainType
+} from './state/todos-reducer'
+import {addTaskAC, changeTaskStatusAC, changeTaskTitleAC, removeTaskAC, TasksType} from './state/tasks-reducer'
+import {TaskStatus} from './api/todo-api'
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -58,7 +47,7 @@ const useStyles = makeStyles((theme: Theme) =>
 const App = () => {
   const classes = useStyles()
 
-  const todos = useSelector<AppRootStateType, Array<TodoType>>(state => state.todos)
+  const todos = useSelector<AppRootStateType, Array<TodoDomainType>>(state => state.todos)
   const tasks = useSelector<AppRootStateType, TasksType>(state => state.tasks)
   const dispatch = useDispatch()
 
@@ -78,7 +67,7 @@ const App = () => {
     dispatch(removeTodoAC(todoId))
   }, [dispatch])
 
-  const changeTaskStatus = useCallback((taskId: string, todoId: string, status: boolean) => {
+  const changeTaskStatus = useCallback((taskId: string, todoId: string, status: TaskStatus) => {
     dispatch(changeTaskStatusAC(taskId, todoId, status))
   }, [dispatch])
 

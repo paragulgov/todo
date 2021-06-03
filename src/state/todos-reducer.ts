@@ -1,5 +1,5 @@
-import {FilterValueType, TodoType} from '../App'
 import {v1} from 'uuid'
+import {TodoType} from '../api/todo-api'
 
 export type RemoveTodoActionType = {
   type: 'REMOVE-TODO'
@@ -26,18 +26,25 @@ export type ChangeTodoFilterActionType = {
 
 type ActionType = RemoveTodoActionType | AddTodoActionType | ChangeTodoTitleActionType | ChangeTodoFilterActionType
 
-const initialState: Array<TodoType> = []
+const initialState: Array<TodoDomainType> = []
 
-export const todosReducer = (state: Array<TodoType> = initialState, action: ActionType): Array<TodoType> => {
+export type FilterValueType = 'all' | 'active' | 'completed'
+export type TodoDomainType = TodoType & {
+  filter: FilterValueType
+}
+
+export const todosReducer = (state: Array<TodoDomainType> = initialState, action: ActionType): Array<TodoDomainType> => {
   switch (action.type) {
     case 'REMOVE-TODO': {
       return state.filter(todo => todo.id !== action.todoId)
     }
     case 'ADD-TODO': {
-      const newTodo: TodoType = {
+      const newTodo: TodoDomainType = {
         id: action.todoId,
         title: action.title,
-        filter: 'all'
+        filter: 'all',
+        addedDate: '',
+        order: 0
       }
       return [newTodo, ...state]
     }
