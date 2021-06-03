@@ -37,7 +37,12 @@ test('correct todo should be added', () => {
     {id: todoId2, title: 'What to buy', filter: 'all', order: 0, addedDate: ''}
   ]
 
-  const action = addTodoAC(newTodoTitle)
+  const action = addTodoAC({
+    id: 'id',
+    title: newTodoTitle,
+    order: 0,
+    addedDate: ''
+  })
 
   const endState = todosReducer(startState, action)
 

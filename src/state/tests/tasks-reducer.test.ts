@@ -1,7 +1,6 @@
 import {
   addTaskAC,
-  changeTaskStatusAC,
-  changeTaskTitleAC,
+  updateTaskAC,
   removeTaskAC,
   setTasksAC,
   tasksReducer,
@@ -23,7 +22,7 @@ test('correct task should be deleted from correct array', () => {
         deadline: '',
         description: '',
         startDate: '',
-        todoId: 'todoId1'
+        todoListId: 'todoId1'
       },
       {
         id: '2',
@@ -35,7 +34,7 @@ test('correct task should be deleted from correct array', () => {
         deadline: '',
         description: '',
         startDate: '',
-        todoId: 'todoId1'
+        todoListId: 'todoId1'
       },
       {
         id: '3',
@@ -47,7 +46,7 @@ test('correct task should be deleted from correct array', () => {
         deadline: '',
         description: '',
         startDate: '',
-        todoId: 'todoId1'
+        todoListId: 'todoId1'
       }
     ],
     'todoId2': [
@@ -61,7 +60,7 @@ test('correct task should be deleted from correct array', () => {
         deadline: '',
         description: '',
         startDate: '',
-        todoId: 'todoId2'
+        todoListId: 'todoId2'
       },
       {
         id: '2',
@@ -73,7 +72,7 @@ test('correct task should be deleted from correct array', () => {
         deadline: '',
         description: '',
         startDate: '',
-        todoId: 'todoId2'
+        todoListId: 'todoId2'
       },
       {
         id: '3',
@@ -85,7 +84,7 @@ test('correct task should be deleted from correct array', () => {
         deadline: '',
         description: '',
         startDate: '',
-        todoId: 'todoId2'
+        todoListId: 'todoId2'
       }
     ]
   }
@@ -106,7 +105,7 @@ test('correct task should be deleted from correct array', () => {
         deadline: '',
         description: '',
         startDate: '',
-        todoId: 'todoId1'
+        todoListId: 'todoId1'
       },
       {
         id: '2',
@@ -118,7 +117,7 @@ test('correct task should be deleted from correct array', () => {
         deadline: '',
         description: '',
         startDate: '',
-        todoId: 'todoId1'
+        todoListId: 'todoId1'
       },
       {
         id: '3',
@@ -130,7 +129,7 @@ test('correct task should be deleted from correct array', () => {
         deadline: '',
         description: '',
         startDate: '',
-        todoId: 'todoId1'
+        todoListId: 'todoId1'
       }
     ],
     'todoId2': [
@@ -144,7 +143,7 @@ test('correct task should be deleted from correct array', () => {
         deadline: '',
         description: '',
         startDate: '',
-        todoId: 'todoId2'
+        todoListId: 'todoId2'
       },
       {
         id: '3',
@@ -156,7 +155,7 @@ test('correct task should be deleted from correct array', () => {
         deadline: '',
         description: '',
         startDate: '',
-        todoId: 'todoId2'
+        todoListId: 'todoId2'
       }
     ]
   })
@@ -176,7 +175,7 @@ test('correct task should be added to correct array', () => {
         deadline: '',
         description: '',
         startDate: '',
-        todoId: 'todoId1'
+        todoListId: 'todoId1'
       },
       {
         id: '2',
@@ -188,7 +187,7 @@ test('correct task should be added to correct array', () => {
         deadline: '',
         description: '',
         startDate: '',
-        todoId: 'todoId1'
+        todoListId: 'todoId1'
       },
       {
         id: '3',
@@ -200,7 +199,7 @@ test('correct task should be added to correct array', () => {
         deadline: '',
         description: '',
         startDate: '',
-        todoId: 'todoId1'
+        todoListId: 'todoId1'
       }
     ],
     'todoId2': [
@@ -214,19 +213,7 @@ test('correct task should be added to correct array', () => {
         deadline: '',
         description: '',
         startDate: '',
-        todoId: 'todoId2'
-      },
-      {
-        id: '2',
-        title: 'milk',
-        status: TaskStatus.Completed,
-        priority: TaskPriority.Low,
-        order: 0,
-        addedDate: '',
-        deadline: '',
-        description: '',
-        startDate: '',
-        todoId: 'todoId2'
+        todoListId: 'todoId2'
       },
       {
         id: '3',
@@ -238,18 +225,29 @@ test('correct task should be added to correct array', () => {
         deadline: '',
         description: '',
         startDate: '',
-        todoId: 'todoId2'
+        todoListId: 'todoId2'
       }
     ]
   }
 
-  const action = addTaskAC('todoId2', 'strawberry')
+  const action = addTaskAC({
+    id: 'id',
+    todoListId: 'todoId2',
+    title: 'strawberry',
+    status: TaskStatus.New,
+    priority: 0,
+    addedDate: '',
+    order: 0,
+    description: '',
+    deadline: '',
+    startDate: ''
+  })
 
   const endState = tasksReducer(startState, action)
 
   expect(endState['todoId1'].length).toBe(3)
-  expect(endState['todoId2'].length).toBe(4)
-  expect(endState['todoId2'][0].id).toBeDefined()
+  expect(endState['todoId2'].length).toBe(3)
+  expect(endState['todoId2'][0].id).toBe('id')
   expect(endState['todoId2'][0].title).toBe('strawberry')
   expect(endState['todoId2'][0].status).toBe(TaskStatus.New)
 })
@@ -267,7 +265,7 @@ test('status of specified task should be changed', () => {
         deadline: '',
         description: '',
         startDate: '',
-        todoId: 'todoId2'
+        todoListId: 'todoId2'
       },
       {
         id: '2',
@@ -279,7 +277,7 @@ test('status of specified task should be changed', () => {
         deadline: '',
         description: '',
         startDate: '',
-        todoId: 'todoId2'
+        todoListId: 'todoId2'
       },
       {
         id: '3',
@@ -291,7 +289,7 @@ test('status of specified task should be changed', () => {
         deadline: '',
         description: '',
         startDate: '',
-        todoId: 'todoId2'
+        todoListId: 'todoId2'
       }
     ],
     'todoId2': [
@@ -305,7 +303,7 @@ test('status of specified task should be changed', () => {
         deadline: '',
         description: '',
         startDate: '',
-        todoId: 'todoId2'
+        todoListId: 'todoId2'
       },
       {
         id: '2',
@@ -317,7 +315,7 @@ test('status of specified task should be changed', () => {
         deadline: '',
         description: '',
         startDate: '',
-        todoId: 'todoId2'
+        todoListId: 'todoId2'
       },
       {
         id: '3',
@@ -329,12 +327,12 @@ test('status of specified task should be changed', () => {
         deadline: '',
         description: '',
         startDate: '',
-        todoId: 'todoId2'
+        todoListId: 'todoId2'
       }
     ]
   }
 
-  const action = changeTaskStatusAC('2', 'todoId2', TaskStatus.New)
+  const action = updateTaskAC('2', 'todoId2', {status: TaskStatus.New})
 
   const endState = tasksReducer(startState, action)
 
@@ -355,7 +353,7 @@ test('title of specified task should be changed', () => {
         deadline: '',
         description: '',
         startDate: '',
-        todoId: 'todoId2'
+        todoListId: 'todoId2'
       },
       {
         id: '2',
@@ -367,7 +365,7 @@ test('title of specified task should be changed', () => {
         deadline: '',
         description: '',
         startDate: '',
-        todoId: 'todoId2'
+        todoListId: 'todoId2'
       },
       {
         id: '3',
@@ -379,7 +377,7 @@ test('title of specified task should be changed', () => {
         deadline: '',
         description: '',
         startDate: '',
-        todoId: 'todoId2'
+        todoListId: 'todoId2'
       }
     ],
     'todoId2': [
@@ -393,7 +391,7 @@ test('title of specified task should be changed', () => {
         deadline: '',
         description: '',
         startDate: '',
-        todoId: 'todoId2'
+        todoListId: 'todoId2'
       },
       {
         id: '2',
@@ -405,7 +403,7 @@ test('title of specified task should be changed', () => {
         deadline: '',
         description: '',
         startDate: '',
-        todoId: 'todoId2'
+        todoListId: 'todoId2'
       },
       {
         id: '3',
@@ -417,12 +415,12 @@ test('title of specified task should be changed', () => {
         deadline: '',
         description: '',
         startDate: '',
-        todoId: 'todoId2'
+        todoListId: 'todoId2'
       }
     ]
   }
 
-  const action = changeTaskTitleAC('2', 'todoId2', 'Nesquik')
+  const action = updateTaskAC('2', 'todoId2', {title: 'Nesquik'})
   const endState = tasksReducer(startState, action)
 
   expect(endState['todoId2'][1].title).toBe('Nesquik')
@@ -441,7 +439,7 @@ test('new array should be added when new todolist is added', () => {
         deadline: '',
         description: '',
         startDate: '',
-        todoId: 'todoId2'
+        todoListId: 'todoId2'
       },
       {
         id: '2', title: 'JS',
@@ -452,7 +450,7 @@ test('new array should be added when new todolist is added', () => {
         deadline: '',
         description: '',
         startDate: '',
-        todoId: 'todoId2'
+        todoListId: 'todoId2'
       },
       {
         id: '3', title: 'React',
@@ -463,7 +461,7 @@ test('new array should be added when new todolist is added', () => {
         deadline: '',
         description: '',
         startDate: '',
-        todoId: 'todoId2'
+        todoListId: 'todoId2'
       }
     ],
     'todoId2': [
@@ -476,7 +474,7 @@ test('new array should be added when new todolist is added', () => {
         deadline: '',
         description: '',
         startDate: '',
-        todoId: 'todoId2'
+        todoListId: 'todoId2'
       },
       {
         id: '2',
@@ -488,7 +486,7 @@ test('new array should be added when new todolist is added', () => {
         deadline: '',
         description: '',
         startDate: '',
-        todoId: 'todoId2'
+        todoListId: 'todoId2'
       },
       {
         id: '3',
@@ -500,12 +498,17 @@ test('new array should be added when new todolist is added', () => {
         deadline: '',
         description: '',
         startDate: '',
-        todoId: 'todoId2'
+        todoListId: 'todoId2'
       }
     ]
   }
 
-  const action = addTodoAC('new todolist')
+  const action = addTodoAC({
+    id: 'id',
+    order: 0,
+    addedDate: '',
+    title: 'title'
+  })
 
   const endState = tasksReducer(startState, action)
 
@@ -532,7 +535,7 @@ test('property with todolistId should be deleted', () => {
         deadline: '',
         description: '',
         startDate: '',
-        todoId: 'todoId2'
+        todoListId: 'todoId2'
       },
       {
         id: '2',
@@ -544,7 +547,7 @@ test('property with todolistId should be deleted', () => {
         deadline: '',
         description: '',
         startDate: '',
-        todoId: 'todoId2'
+        todoListId: 'todoId2'
       },
       {
         id: '3', title: 'React',
@@ -555,7 +558,7 @@ test('property with todolistId should be deleted', () => {
         deadline: '',
         description: '',
         startDate: '',
-        todoId: 'todoId2'
+        todoListId: 'todoId2'
       }
     ],
     'todoId2': [
@@ -569,7 +572,7 @@ test('property with todolistId should be deleted', () => {
         deadline: '',
         description: '',
         startDate: '',
-        todoId: 'todoId2'
+        todoListId: 'todoId2'
       },
       {
         id: '2',
@@ -581,7 +584,7 @@ test('property with todolistId should be deleted', () => {
         deadline: '',
         description: '',
         startDate: '',
-        todoId: 'todoId2'
+        todoListId: 'todoId2'
       },
       {
         id: '3',
@@ -593,7 +596,7 @@ test('property with todolistId should be deleted', () => {
         deadline: '',
         description: '',
         startDate: '',
-        todoId: 'todoId2'
+        todoListId: 'todoId2'
       }
     ]
   }
@@ -637,7 +640,7 @@ test('tasks should be added for todo', () => {
         deadline: '',
         description: '',
         startDate: '',
-        todoId: 'todoId1'
+        todoListId: 'todoId1'
       },
       {
         id: '2',
@@ -649,7 +652,7 @@ test('tasks should be added for todo', () => {
         deadline: '',
         description: '',
         startDate: '',
-        todoId: 'todoId1'
+        todoListId: 'todoId1'
       },
       {
         id: '3',
@@ -661,7 +664,7 @@ test('tasks should be added for todo', () => {
         deadline: '',
         description: '',
         startDate: '',
-        todoId: 'todoId1'
+        todoListId: 'todoId1'
       }
     ],
     'todoId2': [
@@ -675,7 +678,7 @@ test('tasks should be added for todo', () => {
         deadline: '',
         description: '',
         startDate: '',
-        todoId: 'todoId2'
+        todoListId: 'todoId2'
       },
       {
         id: '2',
@@ -687,7 +690,7 @@ test('tasks should be added for todo', () => {
         deadline: '',
         description: '',
         startDate: '',
-        todoId: 'todoId2'
+        todoListId: 'todoId2'
       },
       {
         id: '3',
@@ -699,7 +702,7 @@ test('tasks should be added for todo', () => {
         deadline: '',
         description: '',
         startDate: '',
-        todoId: 'todoId2'
+        todoListId: 'todoId2'
       }
     ]
   }
