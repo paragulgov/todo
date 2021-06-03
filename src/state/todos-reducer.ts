@@ -1,5 +1,4 @@
 import {Dispatch} from 'redux'
-import {v1} from 'uuid'
 import {todoAPI, TodoType} from '../api/todo-api'
 
 export type RemoveTodoActionType = {
@@ -9,8 +8,7 @@ export type RemoveTodoActionType = {
 
 export type AddTodoActionType = {
   type: 'ADD-TODO'
-  title: string
-  todoId: string
+  todo: TodoType
 }
 
 export type ChangeTodoTitleActionType = {
@@ -50,13 +48,7 @@ export const todosReducer = (state: Array<TodoDomainType> = initialState, action
       return state.filter(todo => todo.id !== action.todoId)
     }
     case 'ADD-TODO': {
-      const newTodo: TodoDomainType = {
-        id: action.todoId,
-        title: action.title,
-        filter: 'all',
-        addedDate: '',
-        order: 0
-      }
+      const newTodo: TodoDomainType = {...action.todo, filter: 'all'}
       return [newTodo, ...state]
     }
     case 'CHANGE-TODO-TITLE': {
@@ -94,8 +86,8 @@ export const removeTodoAC = (todoId: string): RemoveTodoActionType => {
   return {type: 'REMOVE-TODO', todoId}
 }
 
-export const addTodoAC = (title: string): AddTodoActionType => {
-  return {type: 'ADD-TODO', title, todoId: v1()}
+export const addTodoAC = (todo: TodoType): AddTodoActionType => {
+  return {type: 'ADD-TODO', todo}
 }
 
 export const changeTodoTitleAC = (todoId: string, title: string): ChangeTodoTitleActionType => {
@@ -114,5 +106,26 @@ export const fetchTodosTC = () => (dispatch: Dispatch) => {
   todoAPI.getTodos()
     .then((res) => {
       dispatch(setTodosAC(res.data))
+    })
+}
+
+export const deleteTodoTC = (todoId: string) => (dispatch: Dispatch) => {
+  todoAPI.deleteTodo(todoId)
+    .then((res) => {
+      dispatch(removeTodoAC(todoId))
+    })
+}
+
+export const addTodoTC = (title: string) => (dispatch: Dispatch) => {
+  todoAPI.createTodo(title)
+    .then((res) => {
+      dispatch(addTodoAC(res.data.data.item))
+    })
+}
+
+export const changeTodoTitleTC = (todoId: string, title: string) => (dispatch: Dispatch) => {
+  todoAPI.updateTodo(todoId, title)
+    .then((res) => {
+      dispatch(changeTodoTitleAC(todoId, title))
     })
 }

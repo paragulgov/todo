@@ -19,15 +19,15 @@ import {Menu} from '@material-ui/icons'
 import {useDispatch, useSelector} from 'react-redux'
 import {AppRootStateType} from './state/store'
 import {
-  addTodoAC,
+  addTodoTC,
   changeTodoFilterAC,
-  changeTodoTitleAC,
+  changeTodoTitleTC,
+  deleteTodoTC,
   fetchTodosTC,
-  removeTodoAC,
   TodoDomainType,
   TodoFilterValueType
 } from './state/todos-reducer'
-import {addTaskAC, changeTaskStatusAC, changeTaskTitleAC, removeTaskAC, TasksType} from './state/tasks-reducer'
+import {addTaskTC, deleteTasksTC, TasksType, updateTaskTC} from './state/tasks-reducer'
 import {TaskStatus} from './api/todo-api'
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -57,7 +57,7 @@ const App = () => {
   }, [dispatch])
 
   const addTodo = useCallback((title: string) => {
-    dispatch(addTodoAC(title))
+    dispatch(addTodoTC(title))
   }, [dispatch])
 
   const changeTodoFilter = useCallback((value: TodoFilterValueType, todoId: string) => {
@@ -65,27 +65,27 @@ const App = () => {
   }, [dispatch])
 
   const changeTodoTitle = useCallback((title: string, todoId: string) => {
-    dispatch(changeTodoTitleAC(todoId, title))
+    dispatch(changeTodoTitleTC(todoId, title))
   }, [dispatch])
 
   const removeTodo = useCallback((todoId: string) => {
-    dispatch(removeTodoAC(todoId))
+    dispatch(deleteTodoTC(todoId))
   }, [dispatch])
 
   const changeTaskStatus = useCallback((taskId: string, todoId: string, status: TaskStatus) => {
-    dispatch(changeTaskStatusAC(taskId, todoId, status))
+    dispatch(updateTaskTC(todoId, taskId, {status}))
   }, [dispatch])
 
   const addTask = useCallback((title: string, todoId: string) => {
-    dispatch(addTaskAC(todoId, title))
+    dispatch(addTaskTC(title, todoId))
   }, [dispatch])
 
   const removeTask = useCallback((taskId: string, todoId: string) => {
-    dispatch(removeTaskAC(taskId, todoId))
+    dispatch(deleteTasksTC(todoId, taskId))
   }, [dispatch])
 
   const changeTaskTitle = useCallback((taskId: string, todoId: string, title: string) => {
-    dispatch(changeTaskTitleAC(taskId, todoId, title))
+    dispatch(updateTaskTC(todoId, taskId, {title}))
   }, [dispatch])
 
   return (
