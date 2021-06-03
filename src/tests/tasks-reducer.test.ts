@@ -5,9 +5,9 @@ import {
   setTasksAC,
   tasksReducer,
   TasksType
-} from '../tasks-reducer'
-import {addTodoAC, removeTodoAC, setTodosAC} from '../todos-reducer'
-import {TaskPriority, TaskStatus} from '../../api/todo-api'
+} from '../features/Todos/tasks-reducer'
+import {addTodoAC, removeTodoAC, setTodosAC} from '../features/Todos/todos-reducer'
+import {TaskPriority, TaskStatus} from '../api/todo-api'
 
 test('correct task should be deleted from correct array', () => {
   const startState: TasksType = {

@@ -6,7 +6,7 @@ import {
   removeTodoAC,
   TodoDomainType,
   todosReducer, setTodosAC
-} from '../todos-reducer'
+} from '../features/Todos/todos-reducer'
 
 
 test('correct todo should be removed', () => {

@@ -1,5 +1,5 @@
-import {tasksReducer} from './tasks-reducer'
-import {todosReducer} from './todos-reducer'
+import {tasksReducer} from '../features/Todos/tasks-reducer'
+import {todosReducer} from '../features/Todos/todos-reducer'
 import {applyMiddleware, combineReducers, createStore} from 'redux'
 import ReduxThunk from 'redux-thunk'
 

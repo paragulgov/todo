@@ -1,13 +1,13 @@
 import React, {useCallback, useEffect} from 'react'
-import {AddItemForm} from './components/AddItemForm/AddItemForm'
-import {EditableSpan} from './components/EditableSpan/EditableSpan'
+import {AddItemForm} from '../../../components/AddItemForm/AddItemForm'
+import {EditableSpan} from '../../../components/EditableSpan/EditableSpan'
 import {Button, IconButton} from '@material-ui/core'
 import {Delete} from '@material-ui/icons'
-import {Task} from './Task'
-import {TodoFilterValueType} from './state/todos-reducer'
-import {TaskStatus, TaskType} from './api/todo-api'
+import {Task} from './Task/Task'
+import {TodoFilterValueType} from '../todos-reducer'
+import {TaskStatus, TaskType} from '../../../api/todo-api'
 import {useDispatch} from 'react-redux'
-import {fetchTasksTC} from './state/tasks-reducer'
+import {fetchTasksTC} from '../tasks-reducer'
 
 type TodoPropsType = {
   todoId: string
