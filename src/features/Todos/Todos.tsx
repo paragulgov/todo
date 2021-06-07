@@ -70,10 +70,8 @@ export const Todos: React.FC<TodosPropsType> = props => {
               <Grid item key={todo.id}>
                 <Paper style={{padding: '10px'}} elevation={5}>
                   <Todo
-                    todoId={todo.id}
-                    todoTitle={todo.title}
+                    todo={todo}
                     changeTodoFilter={changeTodoFilter}
-                    todoFilter={todo.filter}
                     removeTodo={removeTodo}
                     changeTodoTitle={changeTodoTitle}
                     tasks={tasks[todo.id]}

@@ -4,7 +4,7 @@ import {
   Button,
   Container,
   createStyles,
-  IconButton,
+  IconButton, LinearProgress,
   makeStyles,
   Theme,
   Toolbar,
@@ -12,6 +12,10 @@ import {
 } from '@material-ui/core'
 import {Menu} from '@material-ui/icons'
 import {Todos} from '../features/Todos/Todos'
+import {ErrorSnackbar} from '../components/ErrorCnackbar/ErrorSnackbar'
+import {useSelector} from 'react-redux'
+import {AppRootStateType} from './store'
+import {RequestStatusType} from './app-reducer'
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -30,8 +34,11 @@ const useStyles = makeStyles((theme: Theme) =>
 const App = () => {
   const classes = useStyles()
 
+  const status = useSelector<AppRootStateType, RequestStatusType>(state => state.app.status)
+
   return (
     <div>
+      <ErrorSnackbar />
       <AppBar position="static" color="secondary">
         <Toolbar>
           <IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="menu">
@@ -43,6 +50,7 @@ const App = () => {
           <Button color="inherit">Login</Button>
         </Toolbar>
       </AppBar>
+      {status === 'loading' && <LinearProgress />}
       <Container fixed>
         <Todos />
       </Container>

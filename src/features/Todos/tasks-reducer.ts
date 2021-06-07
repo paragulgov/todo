@@ -2,6 +2,8 @@ import {TaskPriority, TaskStatus, TaskType, todoAPI, UpdateTaskModelType} from '
 import {AddTodoActionType, RemoveTodoActionType, SetTodosActionType} from './todos-reducer'
 import {Dispatch} from 'redux'
 import {AppRootStateType} from '../../app/store'
+import {setAppErrorAC, SetAppErrorActionType, setAppStatusAC, SetAppStatusActionType} from '../../app/app-reducer'
+import {handleNetworkAppError, handleServerAppError} from '../../utils/error-utils'
 
 const initialState: TasksType = {}
 
@@ -63,20 +65,42 @@ export const fetchTasksTC = (todoId: string) => (dispatch: Dispatch<ActionType>)
   todoAPI.getTasks(todoId)
     .then((res) => {
       dispatch(setTasksAC(res.data.items, todoId))
+      dispatch(setAppStatusAC('succeeded'))
+    })
+    .catch((error) => {
+      handleNetworkAppError(error, dispatch)
     })
 }
 
 export const deleteTasksTC = (todoId: string, taskId: string) => (dispatch: Dispatch<ActionType>) => {
+  dispatch(setAppStatusAC('loading'))
   todoAPI.deleteTask(todoId, taskId)
     .then((res) => {
-      dispatch(removeTaskAC(taskId, todoId))
+      if (res.data.resultCode === 0) {
+        dispatch(removeTaskAC(taskId, todoId))
+        dispatch(setAppStatusAC('succeeded'))
+      } else {
+        handleServerAppError(res.data, dispatch)
+      }
+    })
+    .catch((error) => {
+      handleNetworkAppError(error, dispatch)
     })
 }
 
 export const addTaskTC = (title: string, todoId: string) => (dispatch: Dispatch<ActionType>) => {
+  dispatch(setAppStatusAC('loading'))
   todoAPI.createTask(todoId, title)
     .then((res) => {
-      dispatch(addTaskAC(res.data.data.item))
+      if (res.data.resultCode === 0) {
+        dispatch(addTaskAC(res.data.data.item))
+        dispatch(setAppStatusAC('succeeded'))
+      } else {
+        handleServerAppError(res.data, dispatch)
+      }
+    })
+    .catch((error) => {
+      handleNetworkAppError(error, dispatch)
     })
 }
 
@@ -100,11 +124,19 @@ export const updateTaskTC = (todoId: string, taskId: string, domainModel: Update
       ...domainModel
     }
 
+    dispatch(setAppStatusAC('loading'))
     todoAPI.updateTask(todoId, taskId, apiModel)
       .then((res) => {
-        dispatch(updateTaskAC(taskId, todoId, domainModel))
+        if (res.data.resultCode === 0) {
+          dispatch(updateTaskAC(taskId, todoId, domainModel))
+          dispatch(setAppStatusAC('succeeded'))
+        } else {
+          handleServerAppError(res.data, dispatch)
+        }
       })
-
+      .catch((error) => {
+        handleNetworkAppError(error, dispatch)
+      })
   }
 }
 
@@ -122,6 +154,8 @@ type ActionType =
   | SetTodosActionType
   | RemoveTodoActionType
   | AddTodoActionType
+  | SetAppErrorActionType
+  | SetAppStatusActionType
 
 export type UpdateDomainTaskModelType = {
   title?: string
