@@ -4,7 +4,7 @@ import {useFormik} from 'formik'
 import {useDispatch, useSelector} from 'react-redux'
 import {loginTC} from './auth-reducer'
 import {AppRootStateType} from '../../app/store'
-import { Redirect } from 'react-router-dom'
+import {Redirect} from 'react-router-dom'
 
 type FormikErrorType = {
   email?: string
@@ -52,8 +52,12 @@ export const Login = () => {
         <FormControl>
           <FormLabel>
             <p>To log in get registered
-              <a href={'https://social-network.samuraijs.com/'}
-                 target={'_blank'}>here
+              <a
+                href={'https://social-network.samuraijs.com/'}
+                target={'_blank'}
+                rel="noreferrer"
+              >
+                here
               </a>
             </p>
             <p>or use common test account credentials:</p>

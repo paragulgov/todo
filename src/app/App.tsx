@@ -42,7 +42,6 @@ const App = () => {
   const dispatch = useDispatch()
 
   const status = useSelector<AppRootStateType, RequestStatusType>(state => state.app.status)
-  const initialized = useSelector<AppRootStateType, boolean>(state => state.app.isInitialized)
   const isLoggedIn = useSelector<AppRootStateType, boolean>(state => state.auth.isLoggedIn)
 
   const logoutHandler = useCallback(() => {
@@ -55,7 +54,7 @@ const App = () => {
 
   return (
     <div>
-      <SimpleBackdrop/>
+      <SimpleBackdrop />
       <ErrorSnackbar />
       <AppBar position="static" color="secondary">
         <Toolbar>
