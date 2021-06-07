@@ -1,12 +1,6 @@
 import {Dispatch} from 'redux'
 import {todoAPI, TodoType} from '../../api/todo-api'
-import {
-  RequestStatusType,
-  setAppErrorAC,
-  setAppStatusAC,
-  SetAppErrorActionType,
-  SetAppStatusActionType
-} from '../../app/app-reducer'
+import {RequestStatusType, SetAppErrorActionType, setAppStatusAC, SetAppStatusActionType} from '../../app/app-reducer'
 import {handleNetworkAppError} from '../../utils/error-utils'
 
 const initialState: Array<TodoDomainType> = []

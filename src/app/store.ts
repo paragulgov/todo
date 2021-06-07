@@ -3,11 +3,13 @@ import {todosReducer} from '../features/Todos/todos-reducer'
 import {applyMiddleware, combineReducers, createStore} from 'redux'
 import ReduxThunk from 'redux-thunk'
 import {appReducer} from './app-reducer'
+import {authReducer} from '../features/Login/auth-reducer'
 
 const rootReducer = combineReducers({
   tasks: tasksReducer,
   todos: todosReducer,
-  app: appReducer
+  app: appReducer,
+  auth: authReducer
 })
 
 export const store = createStore(rootReducer, applyMiddleware(ReduxThunk))

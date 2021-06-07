@@ -1,10 +1,11 @@
-import React from 'react'
+import React, {useCallback, useEffect} from 'react'
 import {
   AppBar,
   Button,
   Container,
   createStyles,
-  IconButton, LinearProgress,
+  IconButton,
+  LinearProgress,
   makeStyles,
   Theme,
   Toolbar,
@@ -13,9 +14,13 @@ import {
 import {Menu} from '@material-ui/icons'
 import {Todos} from '../features/Todos/Todos'
 import {ErrorSnackbar} from '../components/ErrorCnackbar/ErrorSnackbar'
-import {useSelector} from 'react-redux'
+import {useDispatch, useSelector} from 'react-redux'
 import {AppRootStateType} from './store'
-import {RequestStatusType} from './app-reducer'
+import {initAppTC, RequestStatusType} from './app-reducer'
+import {Login} from '../features/Login/Login'
+import {Route, Switch} from 'react-router-dom'
+import {logoutTC} from '../features/Login/auth-reducer'
+import {SimpleBackdrop} from '../components/Backdrop/Backdrop'
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -34,10 +39,23 @@ const useStyles = makeStyles((theme: Theme) =>
 const App = () => {
   const classes = useStyles()
 
+  const dispatch = useDispatch()
+
   const status = useSelector<AppRootStateType, RequestStatusType>(state => state.app.status)
+  const initialized = useSelector<AppRootStateType, boolean>(state => state.app.isInitialized)
+  const isLoggedIn = useSelector<AppRootStateType, boolean>(state => state.auth.isLoggedIn)
+
+  const logoutHandler = useCallback(() => {
+    dispatch(logoutTC())
+  }, [dispatch])
+
+  useEffect(() => {
+    dispatch(initAppTC())
+  }, [dispatch])
 
   return (
     <div>
+      <SimpleBackdrop/>
       <ErrorSnackbar />
       <AppBar position="static" color="secondary">
         <Toolbar>
@@ -47,12 +65,16 @@ const App = () => {
           <Typography variant="h6" className={classes.title}>
             Todo
           </Typography>
-          <Button color="inherit">Login</Button>
+
+          {isLoggedIn && <Button onClick={logoutHandler} color="inherit">Log out</Button>}
         </Toolbar>
       </AppBar>
       {status === 'loading' && <LinearProgress />}
       <Container fixed>
-        <Todos />
+        <Switch>
+          <Route exact path="/" render={() => <Todos />} />
+          <Route path="/login" render={() => <Login />} />
+        </Switch>
       </Container>
     </div>
   )

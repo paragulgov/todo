@@ -37,7 +37,21 @@ export const todoAPI = {
   }
 }
 
+export const authAPI = {
+  login(data: LoginParamsType) {
+    return instance.post<ResponseType<{userId?: number}>>(`auth/login`, data)
+  },
+  me(){
+    return instance.get<ResponseType<MeResponseType>>(`auth/me`)
+  },
+  logout(){
+    return instance.delete<ResponseType>(`auth/login`)
+  }
+}
+
 // types
+
+//todo & task
 
 export type TodoType = {
   id: string
@@ -94,4 +108,19 @@ type GetTasksResponse = {
   items: Array<TaskType>
   totalCount: number
   error: string | null
+}
+
+// auth
+
+export type LoginParamsType = {
+  email: string
+  password: string
+  rememberMe: boolean
+  captcha?: string
+}
+
+export type MeResponseType = {
+  id: number
+  email: string
+  login: string
 }

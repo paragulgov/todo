@@ -15,16 +15,22 @@ import {TaskStatus} from '../../api/todo-api'
 import {Grid, Paper} from '@material-ui/core'
 import {AddItemForm} from '../../components/AddItemForm/AddItemForm'
 import {Todo} from './Todo/Todo'
+import {Redirect} from 'react-router-dom'
 
 type TodosPropsType = {}
 export const Todos: React.FC<TodosPropsType> = props => {
+  const dispatch = useDispatch()
   const todos = useSelector<AppRootStateType, Array<TodoDomainType>>(state => state.todos)
   const tasks = useSelector<AppRootStateType, TasksType>(state => state.tasks)
-  const dispatch = useDispatch()
+  const isLoggedIn = useSelector<AppRootStateType, boolean>(state => state.auth.isLoggedIn)
 
   useEffect(() => {
+    if (!isLoggedIn) {
+      return
+    }
+
     dispatch(fetchTodosTC())
-  }, [dispatch])
+  }, [dispatch, isLoggedIn])
 
   const addTodo = useCallback((title: string) => {
     dispatch(addTodoTC(title))
@@ -57,6 +63,10 @@ export const Todos: React.FC<TodosPropsType> = props => {
   const changeTaskTitle = useCallback((taskId: string, todoId: string, title: string) => {
     dispatch(updateTaskTC(todoId, taskId, {title}))
   }, [dispatch])
+
+  if (!isLoggedIn) {
+    return <Redirect to="/login" />
+  }
 
   return (
     <>
