@@ -79,6 +79,7 @@ export const deleteTodoTC = (todoId: string) => (dispatch: Dispatch<ActionType>)
     })
     .catch((error) => {
       handleNetworkAppError(error, dispatch)
+      dispatch(changeTodoEntityStatusAC(todoId, 'failed'))
     })
 }
 

@@ -93,6 +93,7 @@ export const Todo: React.FC<TodoPropsType> = React.memo((props) => {
                 removeTask={removeTask}
                 changeTaskTitle={changeTaskTitle}
                 changeTaskStatus={changeTaskStatus}
+                entityStatus={todo.entityStatus}
               />
             )
           })

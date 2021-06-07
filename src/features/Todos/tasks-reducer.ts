@@ -74,6 +74,7 @@ export const fetchTasksTC = (todoId: string) => (dispatch: Dispatch<ActionType>)
 
 export const deleteTasksTC = (todoId: string, taskId: string) => (dispatch: Dispatch<ActionType>) => {
   dispatch(setAppStatusAC('loading'))
+
   todoAPI.deleteTask(todoId, taskId)
     .then((res) => {
       if (res.data.resultCode === 0) {
